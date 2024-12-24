@@ -3,22 +3,20 @@ public:
     int m,n;
     vector<int> row={1,0,-1,0};
     vector<int> col={0,-1,0,1};
-    bool solve(vector<vector<char>>& board, string &word, int i, int j, int idx) {
-        if (idx == word.length()) return true;
-        if (i >= m || i < 0 || j >= n || j < 0 || board[i][j] != word[idx]) return false;
+    bool solve(vector<vector<char>>& board, string &word,int i,int j,int idx){
+        cout<<idx<<endl;
+        if(idx==word.length())return true;
+        if(i>=m||i<0||j>=n||j<0||word[idx]!=board[i][j])return false;
+        char temp=board[i][j];
+        board[i][j]='$';
 
-        char temp = board[i][j];
-        board[i][j] = '$'; // Mark as visited
-
-        for (int k = 0; k < 4; k++) {
-            int rows = row[k] + i;
-            int cols = col[k] + j;
-            if (solve(board, word, rows, cols, idx + 1)) {
-                return true;
-            }
+        for(int k=0;k<n;k++){
+            int rows = row[k]+i;
+            int cols = col[k]+j;
+            if(solve(board,word,rows,cols,idx+1)) return true;
         }
 
-        board[i][j] = temp; // Restore original value
+        board[i][j]=temp;
         return false;
     }
     bool exist(vector<vector<char>>& board, string word) {

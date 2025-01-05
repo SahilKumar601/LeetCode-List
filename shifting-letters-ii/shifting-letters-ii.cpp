@@ -1,25 +1,33 @@
 class Solution {
 public:
     string shiftingLetters(string s, vector<vector<int>>& shifts) {
-        int n = s.size();
-        vector<int> shift(n + 1, 0);
+        int n = shifts.size();
+        int m = s.length();
 
-        // Process the shifts
-        for (auto& shiftOp : shifts) {
-            int start = shiftOp[0], end = shiftOp[1], direction = shiftOp[2];
-            shift[start] += (direction == 1 ? 1 : -1);
-            shift[end + 1] -= (direction == 1 ? 1 : -1);
+        vector<int> res(m,0);
+        for(int i=0;i<n;i++){
+            int start = shifts[i][0];
+            int end = shifts[i][1];
+            int inc;
+            shifts[i][2] == 1 ? inc=1 : inc = -1;
+            res[start]+=inc;
+            if(end<m-1){
+                res[end+1]-=inc;
+            }
         }
-
-        int currentShift = 0;
-        for (int i = 0; i < n; ++i) {
-            currentShift += shift[i];
-            shift[i] = currentShift;
+        for(int i=1;i<m;i++){
+            res[i]=res[i-1] + res[i];
         }
-
-        for (int i = 0; i < n; ++i) {
-            int netShift = (shift[i] % 26 + 26) % 26;
-            s[i] = 'a' + (s[i] - 'a' + netShift) % 26;
+        for(int i=0;i<m;i++){
+            cout<<res[i]<<" ";
+        }
+        string result;
+        for(int i=0;i<m;i++){
+            int shift = res[i] % 26;
+            if(shift<26){
+                shift+=26;
+            }
+            s[i]=(((s[i]-'a')+shift)%26)+'a';
         }
 
         return s;

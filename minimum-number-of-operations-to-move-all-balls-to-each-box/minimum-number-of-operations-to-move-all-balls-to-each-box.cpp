@@ -1,25 +1,24 @@
 class Solution {
 public:
     vector<int> minOperations(string s) {
-        vector<int> vec;
-        vector<int> result;
-        int n=s.length();
+        int n = s.length();
+        vector<int>result(n,0);
+        int cumVal=0;
+        int cumSum=0;
+
         for(int i=0;i<n;i++){
-            if(s[i]=='1'){
-                vec.push_back(i);
-            }
+            result[i]+=cumSum;
+
+            cumVal+=s[i] == '0' ? 0:1;
+            cumSum+=cumVal;
         }
-        int k=0;
-        for(int i=0;i<n;i++){
-            int moves=0;
-            for(int j=0;j<vec.size();j++){
-                if(i==vec[j]){
-                    continue;
-                }else{
-                    moves+=abs(i-vec[j]);
-                }
-            }
-            result.push_back(moves);
+        cumVal=0;
+        cumSum=0;
+        for(int i=n-1;i>=0;i--){
+            result[i]+=cumSum;
+
+            cumVal+=s[i] == '0' ? 0:1;
+            cumSum+=cumVal;
         }
         return result;
     }
